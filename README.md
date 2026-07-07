@@ -1,61 +1,57 @@
 # Repurpose
 
-Apple-style frontend MVP for a TikTok-first reposting tool.
+Private frontend dashboard for reposting saved TikTok videos.
 
-## Idea
+## What this is
 
-1. Post/edit inside TikTok.
+This is not a public SaaS-style website. It is a private utility for one workflow:
+
+1. Edit and post the video on TikTok.
 2. TikTok saves the final video to your phone.
-3. Upload the saved MP4/MOV here.
-4. Paste the TikTok share link.
-5. Backend detects the caption.
-6. Backend reposts the uploaded video + caption to YouTube Shorts, Instagram Reels, Facebook Reels, etc.
+3. Open this dashboard.
+4. Upload the saved video.
+5. Paste the TikTok share link.
+6. Detect/edit the caption.
+7. Queue it for YouTube Shorts, Instagram Reels, and Facebook Reels.
 
 ## Current status
 
-This repo is frontend-only. It includes:
+Frontend only.
 
-- Responsive landing page
-- Upload UI
+Included:
+
+- Mobile and desktop private dashboard
+- Video upload UI
 - TikTok share link input
 - Placeholder caption detection
-- Editable caption field
-- Platform selector
-- Mock queue/status panel
-- Placeholder account connection cards
+- Editable caption
+- Platform checkboxes
+- Mock queue/status card
 
 ## Files
 
-- `index.html` — main page
-- `styles.css` — full responsive Apple-style design
-- `script.js` — frontend interactions/mock queue
+- `index.html`
+- `styles.css`
+- `script.js`
 
 ## Backend plan
 
-Recommended backend stack:
+Build in this order:
 
-- Cloudflare Pages for frontend hosting
-- Cloudflare Workers for API routes
-- Cloudflare R2 for video storage
-- Cloudflare D1 or Supabase for database
-- Cloudflare Queues for posting jobs
-- YouTube Data API first
-- Meta Graph API later for Instagram/Facebook
+1. Cloudflare Worker API
+2. R2 upload URL creation
+3. Save uploaded video metadata
+4. YouTube OAuth
+5. YouTube Shorts upload
+6. Meta OAuth
+7. Instagram/Facebook Reels posting
 
-## Deploy
+## Hosting
 
-You can host this as a static site on GitHub Pages or Cloudflare Pages.
+Static hosting works with GitHub Pages or Cloudflare Pages.
 
-For Cloudflare Pages:
+Cloudflare Pages settings:
 
-1. Connect this GitHub repo to Cloudflare Pages.
-2. Use no build command.
-3. Use `/` as the output directory.
-4. Deploy.
-
-For GitHub Pages:
-
-1. Go to Settings → Pages.
-2. Source: deploy from branch.
-3. Branch: `main`.
-4. Folder: `/root`.
+- Build command: empty
+- Output directory: `/`
+- Root directory: `/`
