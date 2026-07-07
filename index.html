@@ -3,200 +3,111 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Repurpose — TikTok-first crossposting</title>
-  <meta name="description" content="Upload your saved TikTok video, paste the share link, detect the caption, and repost to Shorts, Reels and more." />
+  <title>Repurpose</title>
+  <meta name="description" content="Private repost dashboard for saved TikTok videos." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="background-glow glow-one"></div>
-  <div class="background-glow glow-two"></div>
-
-  <header class="site-header">
-    <a class="brand" href="#top" aria-label="Repurpose home">
-      <span class="brand-mark">R</span>
-      <span>Repurpose</span>
-    </a>
-
-    <nav class="desktop-nav" aria-label="Main navigation">
-      <a href="#workflow">Workflow</a>
-      <a href="#upload">Upload</a>
-      <a href="#accounts">Accounts</a>
-    </nav>
-
-    <button class="nav-cta" type="button" data-scroll-to="upload">Start reposting</button>
-  </header>
-
-  <main id="top">
-    <section class="hero section-shell">
-      <div class="hero-copy">
-        <div class="eyebrow">TikTok-first reposting</div>
-        <h1>Post on TikTok. Upload once here. Send it everywhere.</h1>
-        <p class="hero-subtitle">
-          A minimalist dashboard for creators who edit in TikTok first. Upload the saved video,
-          paste the TikTok share link, detect the caption, then queue it for Shorts and Reels.
-        </p>
-        <div class="hero-actions">
-          <button class="primary-button" type="button" data-scroll-to="upload">Upload a video</button>
-          <button class="secondary-button" type="button" data-scroll-to="workflow">See how it works</button>
-        </div>
-        <div class="hero-metrics" aria-label="Product highlights">
-          <div><strong>3</strong><span>steps</span></div>
-          <div><strong>1</strong><span>saved MP4</span></div>
-          <div><strong>∞</strong><span>future platforms</span></div>
-        </div>
+  <main class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="kicker">Private tool</p>
+        <h1>Repurpose</h1>
       </div>
-
-      <div class="hero-card" aria-label="Repost preview">
-        <div class="phone-frame">
-          <div class="phone-header">
-            <span></span><span></span><span></span>
-          </div>
-          <div class="repost-preview">
-            <div class="video-tile">
-              <div class="play-button">▶</div>
-              <div class="video-gradient"></div>
-            </div>
-            <div class="preview-caption">
-              <span class="caption-label">Detected caption</span>
-              <p id="previewCaption">Upload your saved TikTok and paste the share link to pull the caption.</p>
-            </div>
-            <div class="platform-row">
-              <span class="platform-pill active">YouTube Shorts</span>
-              <span class="platform-pill active">Instagram Reels</span>
-              <span class="platform-pill">Facebook Reels</span>
-            </div>
-          </div>
-        </div>
+      <div class="topbar-actions">
+        <button class="small-button" type="button" id="settingsButton">Settings</button>
       </div>
+    </header>
+
+    <section class="status-strip" aria-label="Connected accounts">
+      <article class="status-card waiting">
+        <span>YouTube</span>
+        <strong>Not connected</strong>
+      </article>
+      <article class="status-card waiting">
+        <span>Instagram</span>
+        <strong>Not connected</strong>
+      </article>
+      <article class="status-card waiting">
+        <span>Facebook</span>
+        <strong>Not connected</strong>
+      </article>
     </section>
 
-    <section id="workflow" class="section-shell workflow-section">
-      <div class="section-heading">
-        <span class="eyebrow">Workflow</span>
-        <h2>Built around how you actually post.</h2>
-        <p>You still edit inside TikTok. This just handles the boring reposting layer after TikTok saves the video to your phone.</p>
-      </div>
-
-      <div class="steps-grid">
-        <article class="step-card">
-          <span class="step-number">01</span>
-          <h3>Post on TikTok</h3>
-          <p>Edit, caption and publish exactly as normal. Let TikTok save the final MP4 to your camera roll.</p>
-        </article>
-        <article class="step-card">
-          <span class="step-number">02</span>
-          <h3>Upload saved video</h3>
-          <p>Drop the saved MP4 into Repurpose from your phone or desktop. The layout works cleanly on both.</p>
-        </article>
-        <article class="step-card">
-          <span class="step-number">03</span>
-          <h3>Paste share link</h3>
-          <p>Paste the TikTok link. The backend will detect the caption, then you can edit it before posting.</p>
-        </article>
-        <article class="step-card">
-          <span class="step-number">04</span>
-          <h3>Queue everywhere</h3>
-          <p>Send the uploaded MP4 and caption to connected accounts like YouTube Shorts and Instagram Reels.</p>
-        </article>
-      </div>
-    </section>
-
-    <section id="upload" class="section-shell app-section">
-      <div class="app-card">
-        <div class="app-card-header">
+    <section class="grid-layout">
+      <form id="repostForm" class="panel form-panel">
+        <div class="panel-header">
           <div>
-            <span class="eyebrow">Create repost</span>
-            <h2>New upload</h2>
+            <p class="kicker">New repost</p>
+            <h2>Upload TikTok save</h2>
           </div>
-          <span class="status-badge">Frontend only</span>
+          <span class="badge">Local demo</span>
         </div>
 
-        <form id="repostForm" class="repost-form">
-          <label class="upload-zone" for="videoInput" id="dropZone">
-            <input id="videoInput" type="file" accept="video/mp4,video/quicktime,video/*" />
-            <span class="upload-icon">↑</span>
-            <strong>Upload saved TikTok video</strong>
-            <small>MP4 or MOV. This stays local until the backend is connected.</small>
-          </label>
+        <label class="upload-box" for="videoInput" id="dropZone">
+          <input id="videoInput" type="file" accept="video/mp4,video/quicktime,video/*" />
+          <span class="upload-icon">+</span>
+          <strong>Choose video</strong>
+          <small>Use the file TikTok saved to your phone.</small>
+        </label>
 
-          <div id="filePreview" class="file-preview hidden">
-            <div>
-              <strong id="fileName">video.mp4</strong>
-              <span id="fileMeta">Ready to upload</span>
-            </div>
-            <button type="button" class="ghost-button" id="clearFile">Remove</button>
+        <div id="filePreview" class="file-preview hidden">
+          <div>
+            <strong id="fileName">video.mp4</strong>
+            <span id="fileMeta">Ready</span>
           </div>
+          <button type="button" class="small-button" id="clearFile">Remove</button>
+        </div>
 
-          <label class="field-group" for="tiktokUrl">
-            <span>TikTok share link</span>
-            <input id="tiktokUrl" type="url" placeholder="https://www.tiktok.com/@username/video/123..." autocomplete="off" />
-          </label>
+        <label class="field">
+          <span>TikTok share link</span>
+          <input id="tiktokUrl" type="url" placeholder="Paste TikTok link" autocomplete="off" />
+        </label>
 
-          <div class="caption-header">
-            <label for="caption">Caption</label>
-            <button type="button" class="ghost-button" id="detectCaption">Detect caption</button>
+        <div class="field split-label">
+          <span>Caption</span>
+          <button type="button" class="small-button" id="detectCaption">Detect</button>
+        </div>
+        <textarea id="caption" rows="6" placeholder="Caption will appear here. You can edit it before posting."></textarea>
+
+        <fieldset class="platforms">
+          <legend>Post to</legend>
+          <label><input type="checkbox" value="youtube" checked /> YouTube Shorts</label>
+          <label><input type="checkbox" value="instagram" checked /> Instagram Reels</label>
+          <label><input type="checkbox" value="facebook" /> Facebook Reels</label>
+        </fieldset>
+
+        <button class="primary-button" type="submit">Queue repost</button>
+      </form>
+
+      <aside class="panel side-panel">
+        <div class="panel-header">
+          <div>
+            <p class="kicker">Queue</p>
+            <h2>Status</h2>
           </div>
-          <textarea id="caption" rows="5" placeholder="Caption will appear here. You can edit it before posting."></textarea>
-
-          <fieldset class="platform-selector">
-            <legend>Post to</legend>
-            <label><input type="checkbox" checked value="youtube" /> <span>YouTube Shorts</span></label>
-            <label><input type="checkbox" checked value="instagram" /> <span>Instagram Reels</span></label>
-            <label><input type="checkbox" value="facebook" /> <span>Facebook Reels</span></label>
-          </fieldset>
-
-          <button class="primary-button full-width" type="submit">Queue repost</button>
-        </form>
-      </div>
-
-      <aside class="queue-card" aria-label="Queue status">
-        <div class="queue-header">
-          <span class="eyebrow">Queue</span>
-          <h3>Posting status</h3>
         </div>
         <div id="queueList" class="queue-list">
           <div class="empty-state">
-            <span>◎</span>
-            <p>No repost queued yet.</p>
+            <strong>No posts yet</strong>
+            <span>Upload a saved TikTok to start.</span>
           </div>
         </div>
       </aside>
     </section>
 
-    <section id="accounts" class="section-shell accounts-section">
-      <div class="section-heading compact">
-        <span class="eyebrow">Accounts</span>
-        <h2>Connection UI ready for the backend.</h2>
-        <p>These buttons are placeholders now. We’ll wire them to OAuth in the backend stage.</p>
-      </div>
-
-      <div class="accounts-grid">
-        <article class="account-card">
-          <div class="account-icon youtube">▶</div>
-          <div><h3>YouTube</h3><p>Upload Shorts through the YouTube Data API.</p></div>
-          <button type="button" class="connect-button">Connect</button>
-        </article>
-        <article class="account-card">
-          <div class="account-icon instagram">◎</div>
-          <div><h3>Instagram</h3><p>Publish Reels through Meta once permissions are approved.</p></div>
-          <button type="button" class="connect-button">Connect</button>
-        </article>
-        <article class="account-card">
-          <div class="account-icon facebook">f</div>
-          <div><h3>Facebook</h3><p>Reuse Meta setup for Facebook Reels/Page publishing.</p></div>
-          <button type="button" class="connect-button">Connect</button>
-        </article>
-      </div>
+    <section class="panel notes-panel">
+      <p class="kicker">Backend next</p>
+      <ul>
+        <li>Cloudflare Worker for upload URLs and API routes.</li>
+        <li>R2 for storing the uploaded video.</li>
+        <li>YouTube upload first, then Meta/Instagram.</li>
+      </ul>
     </section>
   </main>
-
-  <footer class="site-footer">
-    <span>Repurpose frontend MVP</span>
-    <span>Ready for Cloudflare Workers backend</span>
-  </footer>
 
   <script src="script.js"></script>
 </body>
