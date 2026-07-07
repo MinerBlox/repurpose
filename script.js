@@ -12,12 +12,12 @@ const caption = qs('#caption');
 const detectCaption = qs('#detectCaption');
 const repostForm = qs('#repostForm');
 const queueList = qs('#queueList');
-const previewCaption = qs('#previewCaption');
+const settingsButton = qs('#settingsButton');
 
 const formatBytes = (bytes) => {
   if (!bytes) return '0 B';
   const sizes = ['B', 'KB', 'MB', 'GB'];
-  const i = Math.floor(Math.log(bytes) / Math.log(1024));
+  const i = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), sizes.length - 1);
   return `${(bytes / Math.pow(1024, i)).toFixed(i === 0 ? 0 : 1)} ${sizes[i]}`;
 };
 
@@ -27,13 +27,6 @@ const setFile = (file) => {
   fileMeta.textContent = `${formatBytes(file.size)} · ${file.type || 'video file'}`;
   filePreview.classList.remove('hidden');
 };
-
-qsa('[data-scroll-to]').forEach((button) => {
-  button.addEventListener('click', () => {
-    const target = qs(`#${button.dataset.scrollTo}`);
-    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-});
 
 videoInput.addEventListener('change', (event) => setFile(event.target.files[0]));
 
@@ -54,6 +47,7 @@ videoInput.addEventListener('change', (event) => setFile(event.target.files[0]))
 dropZone.addEventListener('drop', (event) => {
   const file = event.dataTransfer.files[0];
   if (!file) return;
+
   const dataTransfer = new DataTransfer();
   dataTransfer.items.add(file);
   videoInput.files = dataTransfer.files;
@@ -65,52 +59,47 @@ clearFile.addEventListener('click', () => {
   filePreview.classList.add('hidden');
 });
 
-const fakeCaptionFromUrl = (url) => {
-  const clean = url.trim();
-  if (!clean) return '';
-  const author = clean.match(/@([^/]+)/)?.[1];
-  const suffix = author ? ` via @${author}` : '';
-  return `Auto-detected caption placeholder${suffix}. Backend will replace this with real TikTok metadata.`;
+const makePlaceholderCaption = (url) => {
+  const trimmed = url.trim();
+  if (!trimmed) return '';
+  const username = trimmed.match(/@([^/]+)/)?.[1];
+  return username
+    ? `Placeholder caption from @${username}. Backend will replace this with the real TikTok caption.`
+    : 'Placeholder caption. Backend will replace this with the real TikTok caption.';
 };
 
 detectCaption.addEventListener('click', () => {
-  const detected = fakeCaptionFromUrl(tiktokUrl.value);
-  caption.value = detected || 'Paste a TikTok share link first.';
-  previewCaption.textContent = caption.value;
+  const detected = makePlaceholderCaption(tiktokUrl.value);
+  caption.value = detected || 'Paste the TikTok link first.';
 });
 
-caption.addEventListener('input', () => {
-  previewCaption.textContent = caption.value || 'Caption preview will update here.';
+settingsButton?.addEventListener('click', () => {
+  alert('Settings will be added when the backend is connected.');
 });
 
 repostForm.addEventListener('submit', (event) => {
   event.preventDefault();
 
-  const selectedPlatforms = qsa('.platform-selector input:checked').map((input) => input.value);
   const file = videoInput.files[0];
+  const link = tiktokUrl.value.trim();
+  const selectedPlatforms = qsa('.platforms input:checked').map((input) => input.value);
 
-  if (!file) {
-    alert('Upload your saved TikTok video first.');
-    return;
-  }
+  if (!file) return alert('Upload the saved TikTok video first.');
+  if (!link) return alert('Paste the TikTok share link first.');
+  if (!selectedPlatforms.length) return alert('Choose at least one platform.');
 
-  if (!tiktokUrl.value.trim()) {
-    alert('Paste the TikTok share link first.');
-    return;
-  }
-
-  const body = caption.value.trim() || 'No caption added yet.';
+  const text = caption.value.trim() || 'No caption added.';
 
   queueList.innerHTML = `
-    <div class="queue-item">
+    <article class="queue-item">
       <div class="queue-item-header">
         <strong>${file.name}</strong>
-        <span class="queue-chip">Queued</span>
+        <span class="queue-chip">queued</span>
       </div>
-      <p>${body}</p>
+      <p>${text}</p>
       <div class="queue-platforms">
         ${selectedPlatforms.map((platform) => `<span class="queue-chip">${platform}</span>`).join('')}
       </div>
-    </div>
+    </article>
   `;
 });
